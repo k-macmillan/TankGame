@@ -177,8 +177,7 @@ int TankYou::calcDist(int x1, int y1, int x2, int y2)
 
 int TankYou::spendAP(MapData map, PositionData status)
 {
-    // std::cout << status.ap << std::endl << std::endl;
-    // return 3;
+    return 3;
     if (move(map, status) == STAY && attack(map,status) != STAY) //If there is nowhere to move, attack
         return 2;
     
