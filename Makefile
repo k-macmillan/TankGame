@@ -8,4 +8,3 @@ make&run:
 	cp override_make projectx/Makefile
 	cp override_config projectx/config.txt
 	make --directory projectx/
-	(cd projectx && exec ./platform)
