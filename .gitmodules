@@ -1,0 +1,3 @@
+[submodule "projectx"]
+	path = projectx
+	url = https://gitlab.com/jamckee/projectx.git
