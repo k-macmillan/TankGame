@@ -1,10 +1,8 @@
 make&run:
-	rm -f projectx/TankYou.cpp
-	rm -f projectx/TankYou.h
+	g++ -shared -o TankYou.so -fPIC TankYou.cpp MoveController.cpp -std=c++11 -DDYNAMIC
+	rm -f projectx/tanks/TankYou.so
 	rm -f projectx/Makefile
 	rm -f projectx/config.txt
-	cp TankYou.cpp projectx/TankYou.cpp
-	cp TankYou.h projectx/TankYou.h
+	mv TankYou.so projectx/tanks/
 	cp override_make projectx/Makefile
 	cp override_config projectx/config.txt
-	make --directory projectx/

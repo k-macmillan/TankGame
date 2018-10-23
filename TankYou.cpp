@@ -1,10 +1,17 @@
+// g++ -shared -o TankYou.so -fPIC TankYou.cpp -std=c++11 -DDYNAMIC
+
 #include "TankYou.h"
 #include <iostream>
 
 TankYou::TankYou() {
-    setAttribute(6);
+    name = "Kung Fury";    
 }
-TankYou::~TankYou() {}
+TankYou::~TankYou() {
+    std::cout << "Cleaning up controllers..." << std::endl;
+    if (mc != nullptr){
+        delete mc;
+    }
+}
 
 /**
  * @author David Donahue
@@ -16,75 +23,12 @@ TankYou::~TankYou() {}
  */
 direction TankYou::move(MapData map, PositionData status)
 {
-    int min_dist = map.width * map.height + 1;
-    direction ret = STAY;
-    for (int x = 0; x < map.width; ++x)
-    {
-        for (int y = 0; y < map.height; ++y)
-        {
-            //If an enemy is encountered closer than previously encountered
-            if ( map.map[x + y*map.width] > 0 &&
-                 map.map[x + y*map.width] != status.id &&
-                 calcDist(status.game_x, status.game_y, x, y) < min_dist &&
-                 calcDist(status.game_x, status.game_y, x, y) > 1)
-            {
-                min_dist = calcDist(status.game_x, status.game_y, x, y);
-
-                if (std::abs(status.game_x - x) > std::abs(status.game_y - y)) //more horizontal distance
-                {
-                    if (status.game_x > x)
-                    {
-                        if(!map.obstacleMap[status.game_x - 1 + status.game_y * map.width]) //check for obstacle
-                        {
-                            ret = LEFT;
-                        }
-                        else //obstacle in the way
-                        {
-                            ret = (status.game_y > y) ? UP : DOWN; //avoid it up or down
-                        }
-                    }
-                    else
-                    {
-                        if(!map.obstacleMap[status.game_x + 1 + status.game_y * map.width]) //check for obstacle
-                        {
-                            ret = RIGHT;
-                        }
-                        else //obstacle in the way
-                        {
-                            ret = (status.game_y > y) ? UP : DOWN; //avoid it up or down
-                        }
-                    }
-
-                }
-                else
-                {
-                    if (status.game_y > y)
-                    {
-                        if(!map.obstacleMap[status.game_x + (status.game_y - 1)*map.width]) //check for obstacle
-                        {
-                            ret = UP;
-                        }
-                        else //obstacle in the way
-                        {
-                            ret = (status.game_x > x) ? LEFT : RIGHT; //avoid it left or right
-                        }
-                    }
-                    else
-                    {
-                        if(!map.obstacleMap[status.game_x + (status.game_y + 1)*map.width]) //check for obstacle
-                        {
-                            ret = DOWN;
-                        }
-                        else //obstacle in the way
-                        {
-                            ret = (status.game_x > x) ? LEFT : RIGHT; //avoid it left or right
-                        }
-                    }
-                }
-            }
-        }
+    if (mc == nullptr){
+        mc = new MoveController(map.width, map.height, map.obstacleMap);
     }
-    return ret;
+    
+    return direction(mc->move(map.map, status));
+    
 }
 
 /**
@@ -97,43 +41,44 @@ direction TankYou::move(MapData map, PositionData status)
  */
 direction TankYou::attack(MapData map, PositionData status)
 {
+    return LEFT;
     direction ret = STAY;
     int min_dist = map.width * map.height + 1; //Guaranteed to be greater than any real distance
-    for (int x = 0; x < map.width; ++x)
-    {
-        for (int y = 0; y < map.height; ++y)
-        {
-            //If an enemy is encountered closer than previously encountered
-            if ( map.map[x + y*map.width] && //if there is an actor at X, Y
-                 map.map[x + y*map.width] != status.id && //And it is not you
-                 map.map[x + y*map.width] != -status.id && //And it is not your projectile
-                 calcDist(status.game_x, status.game_y, x, y) < min_dist) //And it is the closest one
-            {
-                if (x == status.game_x || y == status.game_y ||(
-                        abs(x - status.game_x) == abs(status.game_y - y)))
-                {
-                    min_dist = calcDist(status.game_x, status.game_y, x, y);
-                    if (status.game_x == x)
-                    {
-                        ret = (y > status.game_y) ? DOWN : UP;
-                    }
-                    else if (status.game_y == y)
-                    {
-                        ret = (x > status.game_x) ? RIGHT : LEFT;
-                    }
-                    else if (status.game_x > x) //to the upright or downright
-                    {
-                        ret = (y > status.game_y) ? DOWNLEFT : UPLEFT;
-                    }
-                    else
-                    {
-                        ret = (y > status.game_y) ? DOWNRIGHT : UPRIGHT;
-                    }
-                }
+    // for (int x = 0; x < map.width; ++x)
+    // {
+    //     for (int y = 0; y < map.height; ++y)
+    //     {
+    //         //If an enemy is encountered closer than previously encountered
+    //         if ( map.map[x + y*map.width] && //if there is an actor at X, Y
+    //              map.map[x + y*map.width] != status.id && //And it is not you
+    //              map.map[x + y*map.width] != -status.id && //And it is not your projectile
+    //              calcDist(status.game_x, status.game_y, x, y) < min_dist) //And it is the closest one
+    //         {
+    //             if (x == status.game_x || y == status.game_y ||(
+    //                     abs(x - status.game_x) == abs(status.game_y - y)))
+    //             {
+    //                 min_dist = calcDist(status.game_x, status.game_y, x, y);
+    //                 if (status.game_x == x)
+    //                 {
+    //                     ret = (y > status.game_y) ? DOWN : UP;
+    //                 }
+    //                 else if (status.game_y == y)
+    //                 {
+    //                     ret = (x > status.game_x) ? RIGHT : LEFT;
+    //                 }
+    //                 else if (status.game_x > x) //to the upright or downright
+    //                 {
+    //                     ret = (y > status.game_y) ? DOWNLEFT : UPLEFT;
+    //                 }
+    //                 else
+    //                 {
+    //                     ret = (y > status.game_y) ? DOWNRIGHT : UPRIGHT;
+    //                 }
+    //             }
             
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
     return ret;
 }
 
@@ -146,38 +91,43 @@ direction TankYou::attack(MapData map, PositionData status)
  */
 attributes TankYou::setAttribute(int pointsAvailable)
 {
-    int hp = 1;
-    int dmg = 1;
-    int range = 1;  
-    int shots = 1;  // Does this count against pointsAvailable?
-    pointsAvailable -= 3;
-    while (pointsAvailable > 0){
-        ++range;
-        --pointsAvailable;
-    }
+    std::cout << "Points available: " << pointsAvailable << std::endl;
+    // int hp = 1;
+    // int dmg = 0;
+    // int range = 0;  
+    // int shots = 0;  // Does this count against pointsAvailable?
+    // pointsAvailable -= 1;
+    // while (pointsAvailable > 0){
+    //     ++range;
+    //     --pointsAvailable;
+    // }
 
-    attributes tankAttributes(hp, dmg, range, shots);
+    attributes tankAttributes;
+    tankAttributes.tankHealth = 1;
     return tankAttributes;
 }
-/**
- * @author David Donahue
- * @par Description: 
- * Calculates how many moves it will take to reach a given coordinate
- * @param[in] x1 - starting point x coordinate
- * @param[in] y1 - starting point y coordinate
- * @param[in] x2 - end point x coordinate
- * @param[in] y2 - end point y coordinate
- * @return distance to the target
- */
-int TankYou::calcDist(int x1, int y1, int x2, int y2)
-{
-    return (std::abs(x1 - x2) + std::abs(y1 - y2));
-}
+
 
 
 int TankYou::spendAP(MapData map, PositionData status)
 {
-    return 3;
+    if (mc != nullptr){
+        mc->printMap(map.map);
+    }
+
+    // for (size_t i = 0; i < map.map.size(); ++i){
+    //         if(i % map.width == 0){
+    //             std::cout << std::endl;
+    //         }
+    //         std::cout << std::setw(3) << std::right << map.map.at(i);
+    //     }
+    //     std::cout << std::endl << std::endl;
+
+    return 1;
+
+
+
+
     if (move(map, status) == STAY && attack(map,status) != STAY) //If there is nowhere to move, attack
         return 2;
     

@@ -1,17 +1,14 @@
-#ifndef __TANKYOU_H
-#define __TANKYOU_H
+#ifndef __TANKYOU_H__
+#define __TANKYOU_H__
 
-#include "src/Actor.h"
-#include "src/direction.h"
+#include "projectx/src/Actor.h"
+#include "projectx/src/direction.h"
+#include "MoveController.h"
 #include <cmath>
 
 class TankYou : public Actor
 {
-    int calcDist(int x1, int y1, int x2, int y2);
-
 public:
-#ifndef testing
-
     /**
      * calculates a move, and returns the data describing its move
      * @return MoveData the desired move to be made, if it is possible then the gamefield will do the move
@@ -38,7 +35,11 @@ public:
 
     TankYou();
     ~TankYou();
-#endif
+
+    // void printMap(const MapData &map);
+private:
+    MoveController *mc = nullptr;
+
 };
 
 #endif
