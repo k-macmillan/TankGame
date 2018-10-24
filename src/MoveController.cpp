@@ -10,8 +10,10 @@ void MoveController::printMap(const std::vector<int> &map){
     std::cout << std::endl << std::endl;
 }
 
-bearing MoveController::move(const std::vector<int> &map,const Meta &meta){
-    std::cout << "Evaluating move..." << std::endl;
+bearing MoveController::move(const std::vector<int> &map, const Meta &meta){
+#ifdef DEBUG
+    printMap(map);
+#endif
     int16_t min_dist = width * height + 1;
     bearing ret = bearing::STAY;
     for (int16_t x = 0; x < width; ++x)
@@ -81,7 +83,6 @@ bearing MoveController::move(const std::vector<int> &map,const Meta &meta){
             }
         }
     }
-    std::cout << "Pref move: " << int(ret) << std::endl;
     return ret;
 }
 
