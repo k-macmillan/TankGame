@@ -11,6 +11,7 @@ void MoveController::printMap(const std::vector<int> &map){
 }
 
 bearing MoveController::move(const std::vector<int> &map,const Meta &meta){
+    std::cout << "Evaluating move..." << std::endl;
     int16_t min_dist = width * height + 1;
     bearing ret = bearing::STAY;
     for (int16_t x = 0; x < width; ++x)
@@ -80,7 +81,7 @@ bearing MoveController::move(const std::vector<int> &map,const Meta &meta){
             }
         }
     }
-    // return bearing::LEFT;
+    std::cout << "Pref move: " << int(ret) << std::endl;
     return ret;
 }
 

@@ -53,8 +53,8 @@ uint16_t Hackerman::enemyCount(const std::vector<int> &map){
 int Hackerman::determineAction(const std::vector<int> &map, const PositionData &status){
     updateStatus(map, status);
 
-    direction mv = direction(mc->move(map, metadata));
-    direction atk = direction(ac->attack(map, metadata));
+    mv = direction(mc->move(map, metadata));
+    atk = direction(ac->attack(map, metadata));
 
     if (mv == STAY && atk != STAY) //If there is nowhere to move, attack
         return 2;
