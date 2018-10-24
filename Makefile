@@ -1,6 +1,6 @@
 INCL := -Iinclude
 SRC_FILES := $(wildcard src/*.cpp)
-CFLAGS := -std=c++11 -fPIC -Wall
+CFLAGS := -std=c++11 -fPIC -Wall -DDEBUG
 EXECUTABLE = TankYou
 SO_FLAGS := -shared -o $(EXECUTABLE).so -DDYNAMIC
 SUBMOD := projectx/

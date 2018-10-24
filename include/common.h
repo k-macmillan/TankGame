@@ -17,8 +17,8 @@ struct Point{
 // Retooled PositionData
 struct Meta{
     int16_t id;
-    int8_t hp;
-    int8_t ap;
+    int16_t hp;
+    int16_t ap;
     Point p;
     Meta(int ID, int Health, int AP, int X, int Y) : id(ID),
                                                      hp(Health),

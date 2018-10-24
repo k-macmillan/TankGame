@@ -4,8 +4,7 @@
 #include "../projectx/src/Actor.h"
 #include "../projectx/src/direction.h"
 #include "common.h"
-#include "MoveController.h"
-#include "AttackController.h"
+#include "Hackerman.h"
 
 class TankYou : public Actor
 {
@@ -26,19 +25,14 @@ public:
 
     virtual int spendAP(MapData map, PositionData status);
 
-    void initializeControllers(const MapData &map, const PositionData &status);
-    void updateStatus(const PositionData &status);
-    void printStatus();
+    void initializeHackerman(const MapData &map, const PositionData &status);
 
     TankYou();
     ~TankYou();
 
 private:
     bool init = false;
-    Meta metadata = Meta(0, 0, 0, 0, 0);
-
-    MoveController *mc = nullptr;
-    AttackController *ac = nullptr;
+    Hackerman *hc = nullptr;
 };
 
 #endif
