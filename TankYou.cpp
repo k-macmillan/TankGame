@@ -8,10 +8,8 @@ TankYou::TankYou() {
 }
 TankYou::~TankYou() {
     std::cout << "Cleaning up controllers..." << std::endl;
-    if (mc != nullptr){
+    if (init){
         delete mc;
-    }
-    if (ac != nullptr){
         delete ac;
     }
 }
