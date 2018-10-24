@@ -8,6 +8,24 @@
 
 enum class bearing {UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UPLEFT, STAY};
 
-int calcDist(const int &x1, const int &y1, const int &x2, const int &y2);
+struct Point{
+    int16_t x;
+    int16_t y;
+    Point(int X, int Y) : x(X), y(Y){}
+};
+
+// Retooled PositionData
+struct Meta{
+    int16_t id;
+    int8_t hp;
+    int8_t ap;
+    Point p;
+    Meta(int ID, int Health, int AP, int X, int Y) : id(ID),
+                                                     hp(Health),
+                                                     ap(AP),
+                                                     p(Point(X,Y)){}
+};
+
+int16_t calcDist(const Point &a, const Point &b);
 
 #endif

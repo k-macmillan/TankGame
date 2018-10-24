@@ -1,6 +1,5 @@
 #ifndef __ATTACKCONTROLLER_H__
 #define __ATTACKCONTROLLER_H__
-#include "projectx/src/PositionData.h"
 #include "common.h"
 
 
@@ -13,7 +12,7 @@ public:
                                                              height(Height),
                                                              o_map(obstacleMap){}
 
-    bearing attack(const std::vector<int> &map, const PositionData &status);
+    bearing attack(const std::vector<int> &map, const Meta &meta);
 
 private:
 

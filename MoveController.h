@@ -1,6 +1,5 @@
 #ifndef __MOVECONTROLLER_H__
 #define __MOVECONTROLLER_H__
-#include "projectx/src/PositionData.h"
 #include "common.h"
 
 
@@ -13,7 +12,7 @@ public:
                                                            height(Height),
                                                            o_map(obstacleMap){}
 
-    bearing move(const std::vector<int> &map, const PositionData &status);
+    bearing move(const std::vector<int> &map, const Meta &meta);
 
     void printMap(const std::vector<int> &map);
 

@@ -10,69 +10,70 @@ void MoveController::printMap(const std::vector<int> &map){
     std::cout << std::endl << std::endl;
 }
 
-bearing MoveController::move(const std::vector<int> &map, const PositionData &status){
-    int min_dist = width * height + 1;
+bearing MoveController::move(const std::vector<int> &map,const Meta &meta){
+    int16_t min_dist = width * height + 1;
     bearing ret = bearing::STAY;
-    for (int x = 0; x < width; ++x)
+    for (int16_t x = 0; x < width; ++x)
     {
-        for (int y = 0; y < height; ++y)
+        for (int16_t y = 0; y < height; ++y)
         {
+            Point p = Point(x, y);
             //If an enemy is encountered closer than previously encountered
             if ( map[x + y * width] > 0 &&
-                 map[x + y * width] != status.id &&
-                 calcDist(status.game_x, status.game_y, x, y) < min_dist &&
-                 calcDist(status.game_x, status.game_y, x, y) > 1)
+                 map[x + y * width] != meta.id &&
+                 calcDist(meta.p, p) < min_dist &&
+                 calcDist(meta.p, p) > 1)
             {
-                min_dist = calcDist(status.game_x, status.game_y, x, y);
+                min_dist = calcDist(meta.p, p);
 
-                if (std::abs(status.game_x - x) > std::abs(status.game_y - y)) //more horizontal distance
+                if (std::abs(meta.p.x - x) > std::abs(meta.p.y - y)) //more horizontal distance
                 {
-                    if (status.game_x > x)
+                    if (meta.p.x > x)
                     {
-                        if(!o_map[status.game_x - 1 + status.game_y * width]) //check for obstacle
+                        if(!o_map[meta.p.x - 1 + meta.p.y * width]) //check for obstacle
                         {
                             ret = bearing::LEFT;
                         }
                         else //obstacle in the way
                         {
-                            ret = (status.game_y > y) ? bearing::UP : bearing::DOWN; //avoid it up or down
+                            ret = (meta.p.y > y) ? bearing::UP : bearing::DOWN; //avoid it up or down
                         }
                     }
                     else
                     {
-                        if(!o_map[status.game_x + 1 + status.game_y * width]) //check for obstacle
+                        if(!o_map[meta.p.x + 1 + meta.p.y * width]) //check for obstacle
                         {
                             ret = bearing::RIGHT;
                         }
                         else //obstacle in the way
                         {
-                            ret = (status.game_y > y) ? bearing::UP : bearing::DOWN; //avoid it up or down
+                            ret = (meta.p.y > y) ? bearing::UP : bearing::DOWN; //avoid it up or down
                         }
                     }
 
                 }
                 else
                 {
-                    if (status.game_y > y)
+                    if (meta.p.y > p.y)
                     {
-                        if(!o_map[status.game_x + (status.game_y - 1)*width]) //check for obstacle
+                        if(!o_map[meta.p.x + (meta.p.y - 1)*width]) //check for obstacle
                         {
                             ret = bearing::UP;
                         }
                         else //obstacle in the way
                         {
-                            ret = (status.game_x > x) ? bearing::LEFT : bearing::RIGHT; //avoid it left or right
+                            ret = (meta.p.x > x) ? bearing::LEFT : bearing::RIGHT; //avoid it left or right
                         }
                     }
                     else
                     {
-                        if(!o_map[status.game_x + (status.game_y + 1)*width]) //check for obstacle
+                        if(!o_map[meta.p.x + (meta.p.y + 1)*width]) //check for obstacle
                         {
                             ret = bearing::DOWN;
                         }
                         else //obstacle in the way
                         {
-                            ret = (status.game_x > x) ? bearing::LEFT : bearing::RIGHT; //avoid it left or right
+                            ret = (meta.p.x > x) ? bearing::LEFT : bearing::RIGHT; //avoid it left or right
                         }
                     }
                 }

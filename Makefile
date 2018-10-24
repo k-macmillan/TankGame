@@ -1,5 +1,5 @@
 make&run:
-	g++ -shared -o TankYou.so -fPIC TankYou.cpp MoveController.cpp common.cpp -std=c++11 -DDYNAMIC
+	g++ -shared -o TankYou.so -fPIC TankYou.cpp MoveController.cpp AttackController.cpp common.cpp -std=c++11 -DDYNAMIC
 	rm -f projectx/tanks/TankYou.so
 	rm -f projectx/Makefile
 	rm -f projectx/config.txt
