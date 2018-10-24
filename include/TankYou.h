@@ -1,8 +1,8 @@
 #ifndef __TANKYOU_H__
 #define __TANKYOU_H__
 
-#include "projectx/src/Actor.h"
-#include "projectx/src/direction.h"
+#include "../projectx/src/Actor.h"
+#include "../projectx/src/direction.h"
 #include "common.h"
 #include "MoveController.h"
 #include "AttackController.h"

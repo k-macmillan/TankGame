@@ -1,8 +1,15 @@
-make&run:
-	g++ -shared -o TankYou.so -fPIC TankYou.cpp MoveController.cpp AttackController.cpp common.cpp -std=c++11 -DDYNAMIC
-	rm -f projectx/tanks/TankYou.so
-	rm -f projectx/Makefile
-	rm -f projectx/config.txt
-	mv TankYou.so projectx/tanks/
-	cp override_make projectx/Makefile
-	cp override_config projectx/config.txt
+INCL := -Iinclude
+SRC_FILES := $(wildcard src/*.cpp)
+CFLAGS := -std=c++11 -fPIC -Wall
+EXECUTABLE = TankYou
+SO_FLAGS := -shared -o $(EXECUTABLE).so -DDYNAMIC
+SUBMOD := projectx/
+
+TankYou:
+	g++ $(SO_FLAGS) $(SRC_FILES) $(INCL) $(CFLAGS)
+	rm -f $(SUBMOD)tanks/$(EXECUTABLE).so
+	rm -f $(SUBMOD)Makefile
+	rm -f $(SUBMOD)config.txt
+	mv $(EXECUTABLE).so $(SUBMOD)tanks/
+	cp overrides/override_make $(SUBMOD)Makefile
+	cp overrides/override_config $(SUBMOD)config.txt
