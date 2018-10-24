@@ -4,7 +4,7 @@
 #include "projectx/src/Actor.h"
 #include "projectx/src/direction.h"
 #include "MoveController.h"
-#include <cmath>
+#include "AttackController.h"
 
 class TankYou : public Actor
 {
@@ -24,22 +24,17 @@ public:
     virtual attributes setAttribute(int pointsAvailable);
 
     virtual int spendAP(MapData map, PositionData status);
-    /**
-     * calculates how many moves it will take to reach a given coordinate
-     * @param[in] x1 - starting point x coordinate
-     * @param[in] y1 - starting point y coordinate
-     * @param[in] x2 - end point x coordinate
-     * @param[in] y2 - end point y coordinate
-     * @return distance to the target
-     */
+
+    void initializeControllers(const MapData &map, const PositionData &status);
 
     TankYou();
     ~TankYou();
 
-    // void printMap(const MapData &map);
 private:
-    MoveController *mc = nullptr;
+    bool init = false;
 
+    MoveController *mc = nullptr;
+    AttackController *ac = nullptr;
 };
 
 #endif

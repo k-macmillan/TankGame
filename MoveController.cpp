@@ -18,8 +18,8 @@ bearing MoveController::move(const std::vector<int> &map, const PositionData &st
         for (int y = 0; y < height; ++y)
         {
             //If an enemy is encountered closer than previously encountered
-            if ( map[x + y*width] > 0 &&
-                 map[x + y*width] != status.id &&
+            if ( map[x + y * width] > 0 &&
+                 map[x + y * width] != status.id &&
                  calcDist(status.game_x, status.game_y, x, y) < min_dist &&
                  calcDist(status.game_x, status.game_y, x, y) > 1)
             {
@@ -84,17 +84,3 @@ bearing MoveController::move(const std::vector<int> &map, const PositionData &st
 }
 
 
-/**
- * @author David Donahue
- * @par Description: 
- * Calculates how many moves it will take to reach a given coordinate
- * @param[in] x1 - starting point x coordinate
- * @param[in] y1 - starting point y coordinate
- * @param[in] x2 - end point x coordinate
- * @param[in] y2 - end point y coordinate
- * @return distance to the target
- */
-int MoveController::calcDist(const int &x1, const int &y1, const int &x2, const int &y2)
-{
-    return (std::abs(x1 - x2) + std::abs(y1 - y2));
-}
