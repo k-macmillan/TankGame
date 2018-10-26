@@ -10,7 +10,7 @@ SRC_PATH= src/
 TANK_PATH= tanks/
 LIB_PATH= libraries/
 
-TANKS = PongAI.so
+TANKS = SimpleAI.so
 TANKS += TankYou.so
 
 TANKS_LINK = src/Actor.h #need to link in the base class for the .so to have everything.
@@ -24,7 +24,7 @@ TANKS_LINK = src/Actor.h #need to link in the base class for the .so to have eve
 %.h.gch: %.h
 	$(CXX) -x c++-header -c $< -o $@ $(INCS) $(LIBS)
 
-tanks:  $(TANKS)
+tanks:	$(TANKS)
 	mkdir -p $(TANK_PATH)
 	mv $^ $(TANK_PATH)
 
