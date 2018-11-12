@@ -1,4 +1,3 @@
-// g++ -shared -o TankYou.so -fPIC TankYou.cpp MoveController.cpp AttackController.cpp common.cpp -std=c++11 -DDYNAMIC
 
 #include "TankYou.h"
 
